@@ -12,6 +12,7 @@ public class ClientDTO {
     private String name;
     private String email;
     private String phone;
+    private String nid;
     private String address;
 
     public Long getId() {
@@ -52,5 +53,13 @@ public class ClientDTO {
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    public String getNid() {
+        return nid;
+    }
+
+    public void setNid(String nid) {
+        this.nid = nid;
     }
 }

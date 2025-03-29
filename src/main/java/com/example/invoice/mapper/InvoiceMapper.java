@@ -1,9 +1,11 @@
 package com.example.invoice.mapper;
 
 import com.example.invoice.dto.BusinessInfoDTO;
+import com.example.invoice.dto.ClientDTO;
 import com.example.invoice.dto.InvoiceDTO;
 import com.example.invoice.dto.InvoiceItemDTO;
 import com.example.invoice.entity.*;
+import com.example.invoice.repository.ClientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -13,7 +15,8 @@ import java.util.stream.Collectors;
 
 @Component
 public class InvoiceMapper {
-
+    @Autowired
+    private ClientRepository clientRepository;
     public InvoiceDTO toDTO(Invoice invoice) {
         if (invoice == null) {
             return null;
@@ -26,10 +29,9 @@ public class InvoiceMapper {
                 invoice.getTaxRate(),
                 invoice.getDiscountPersentage(),
                 invoice.getDiscountCash(),
-                invoice.getTotalAmount(),
                 invoice.getDueDate(),
                 invoice.getStatus(),
-                invoice.getClient().getId(),  // Assuming client has an ID
+                toDTO(invoice.getClient()),
                 invoice.getCreatedBy().getId(),
                 invoice.getItems().stream()
                         .map(item -> new InvoiceItemDTO(
@@ -64,10 +66,18 @@ public class InvoiceMapper {
         invoice.setStatus(invoiceDTO.getStatus());
 
         // Set the client entity (assuming you have a method to get a Client by ID)
-        Client client = new Client();
-        client.setId(invoiceDTO.getClientId()); // Assuming Client has a setId method
-        invoice.setClient(client);
-
+        ClientDTO clientDTO = invoiceDTO.getClient();
+        if (clientDTO != null) {
+            Client existingClient = clientRepository.findByNid(clientDTO.getNid());
+            if (existingClient != null) {
+                // Use existing client if NID matches
+                invoice.setClient(existingClient);
+            } else {
+                // Create new client if NID does not exist
+                Client client = toEntity(clientDTO);
+                invoice.setClient(client);
+            }
+        }
         User user = new User();
         user.setId(invoiceDTO.getCreatedBy());
         invoice.setCreatedBy(user);
@@ -125,5 +135,37 @@ public class InvoiceMapper {
         businessInfo.setWebsite(businessInfoDTO.getWebsite());
 
         return businessInfo;
+    }
+
+
+    public ClientDTO toDTO(Client client) {
+        if (client == null) {
+            return null;
+        }
+
+        ClientDTO clientDTO = new ClientDTO();
+        clientDTO.setId(client.getId());
+        clientDTO.setName(client.getName());
+        clientDTO.setEmail(client.getEmail());
+        clientDTO.setPhone(client.getPhone());
+        clientDTO.setNid(client.getNid());
+        clientDTO.setAddress(client.getAddress());
+        return clientDTO;
+    }
+
+    // Convert ClientDTO to Client Entity
+    public Client toEntity(ClientDTO clientDTO) {
+        if (clientDTO == null) {
+            return null;
+        }
+
+        Client client = new Client();
+        client.setId(clientDTO.getId());
+        client.setName(clientDTO.getName());
+        client.setEmail(clientDTO.getEmail());
+        client.setPhone(clientDTO.getPhone());
+        client.setNid(clientDTO.getNid());
+        client.setAddress(clientDTO.getAddress());
+        return client;
     }
 }

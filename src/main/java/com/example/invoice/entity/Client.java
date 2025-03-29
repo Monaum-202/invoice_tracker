@@ -13,6 +13,7 @@ public class Client {
     private String email;
     private String phone;
 
+    private String nid;
     private String address;
 
     // One client can have multiple invoices
@@ -68,5 +69,21 @@ public class Client {
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    public String getNid() {
+        return nid;
+    }
+
+    public void setNid(String nid) {
+        this.nid = nid;
+    }
+
+    public List<Payment> getPayments() {
+        return payments;
+    }
+
+    public void setPayments(List<Payment> payments) {
+        this.payments = payments;
     }
 }

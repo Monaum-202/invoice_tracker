@@ -33,14 +33,15 @@ public class InvoiceServiceImpl implements InvoiceService {
 
     @Override
     public InvoiceDTO createInvoice(InvoiceDTO invoiceDTO) {
-        Client client = clientRepository.findById(invoiceDTO.getClientId())
-                .orElseThrow(() -> new RuntimeException("Client not found"));
 
         Invoice invoice = invoiceMapper.toEntity(invoiceDTO);
         invoice = invoiceRepository.save(invoice);
 
         if (invoice.getBusinessInfo() != null) {
             businessInfoRepository.save(invoice.getBusinessInfo());
+        }
+        if (invoice.getClient() != null){
+            clientRepository.save(invoice.getClient());
         }
 
         // Then save the invoice
@@ -67,13 +68,9 @@ public class InvoiceServiceImpl implements InvoiceService {
         Invoice existingInvoice = invoiceRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Invoice not found"));
 
-        Client client = clientRepository.findById(invoiceDTO.getClientId())
-                .orElseThrow(() -> new RuntimeException("Client not found"));
-
         existingInvoice.setInvoiceNumber(invoiceDTO.getInvoiceNumber());
         existingInvoice.setIssueDate(invoiceDTO.getIssueDate());
         existingInvoice.setTotalAmount(invoiceDTO.getTotalAmount());
-        existingInvoice.setClient(client);
 
         existingInvoice = invoiceRepository.save(existingInvoice);
         return invoiceMapper.toDTO(existingInvoice);

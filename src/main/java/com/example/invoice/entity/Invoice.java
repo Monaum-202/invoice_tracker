@@ -23,8 +23,8 @@ public class Invoice {
     private LocalDate dueDate;
 
     // Many invoices belong to one client
-    @ManyToOne
-    @JoinColumn(name = "client_id", nullable = false)
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "client_id")
     private Client client;
 
     // Many invoices can be created by one user

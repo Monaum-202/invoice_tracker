@@ -1,5 +1,6 @@
 package com.example.invoice.dto;
 
+import com.example.invoice.entity.Client;
 import com.example.invoice.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -22,14 +23,15 @@ public class InvoiceDTO {
     private Double totalAmount;
     private LocalDate dueDate;
     private String status; // PENDING, PAID, OVERDUE
-    private Long clientId; // Client associated with the invoice
+    private ClientDTO client;
     private Long createdBy;
     private List<InvoiceItemDTO> items; // Invoice items
     private BusinessInfoDTO businessInfo;
 
+
     // Custom constructor to accept all the fields
     public InvoiceDTO(Long id, LocalDateTime issueDate, Double subtotal, Double taxRate,
-                      Double discountPersentage, Double discountCash, Double totalAmount, LocalDate dueDate, String status, Long clientId,
+                      Double discountPersentage, Double discountCash, LocalDate dueDate, String status, ClientDTO client,
                       Long createdBy, List<InvoiceItemDTO> items, BusinessInfoDTO businessInfo) {
 
         this.id = id;
@@ -37,18 +39,18 @@ public class InvoiceDTO {
         LocalDate currentDate = LocalDate.now();
         String currentYear = String.format("%02d", currentDate.getYear() % 100);  // Last two digits of the year
         String currentMonth = String.format("%02d", currentDate.getMonthValue());  // MM format (e.g., "03" for March)
+        String currentDay = String.format("%02d",currentDate.getDayOfMonth());
         String formattedId = String.format("%04d", id);
-        this.invoiceNumber = "INV" + currentYear + currentMonth + formattedId;
+        this.invoiceNumber = "INV" + currentYear + currentMonth+ currentDay + formattedId;
 
         this.issueDate = issueDate;
         this.subtotal = subtotal;
         this.taxRate = taxRate;
         this.discountPersentage = discountPersentage;
         this.discountCash = discountCash;
-        this.totalAmount = totalAmount;
         this.dueDate = dueDate;
         this.status = status;
-        this.clientId = clientId;
+        this.client = client;
         this.createdBy = createdBy;
         this.items = items;
         this.businessInfo = businessInfo;
@@ -119,12 +121,13 @@ public class InvoiceDTO {
         this.status = status;
     }
 
-    public Long getClientId() {
-        return clientId;
+
+    public ClientDTO getClient() {
+        return client;
     }
 
-    public void setClientId(Long clientId) {
-        this.clientId = clientId;
+    public void setClient(ClientDTO client) {
+        this.client = client;
     }
 
     public List<InvoiceItemDTO> getItems() {

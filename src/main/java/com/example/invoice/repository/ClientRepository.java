@@ -14,6 +14,7 @@ import java.util.Optional;
 public interface ClientRepository extends JpaRepository<Client, Long> {
     Optional<Client> findByEmail(String email);
     Page<Client> findAll(Pageable pageable);
+    Client findByNid(String nid);
 
     @Query("SELECT c FROM Client c WHERE " +
             "(:name IS NULL OR c.name LIKE %:name%) " +
