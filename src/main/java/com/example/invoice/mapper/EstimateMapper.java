@@ -25,7 +25,7 @@ public class EstimateMapper {
         dto.setValidUntil(estimate.getValidUntil());
         dto.setTotalAmount(estimate.getTotalAmount());
         dto.setStatus(estimate.getStatus());
-        dto.setClientId(estimate.getClient().getId());
+        dto.setClientName(estimate.getClientName());
         dto.setItems(estimate.getItems().stream().map(estimateItemMapper::toDTO).collect(Collectors.toList()));
 
         return dto;
@@ -41,6 +41,7 @@ public class EstimateMapper {
         estimate.setValidUntil(dto.getValidUntil());
         estimate.setTotalAmount(dto.getTotalAmount());
         estimate.setStatus(dto.getStatus());
+        estimate.setClientName(dto.getClientName());
 
         return estimate;
     }

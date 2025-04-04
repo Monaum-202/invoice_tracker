@@ -17,7 +17,7 @@ public class EstimateDTO {
     private LocalDate validUntil;
     private Double totalAmount;
     private String status;
-    private Long clientId;
+    private String clientName;
     private List<EstimateItemDTO> items;
 
     public Long getId() {
@@ -68,12 +68,12 @@ public class EstimateDTO {
         this.status = status;
     }
 
-    public Long getClientId() {
-        return clientId;
+    public String getClientName() {
+        return clientName;
     }
 
-    public void setClientId(Long clientId) {
-        this.clientId = clientId;
+    public void setClientName(String clientName) {
+        this.clientName = clientName;
     }
 
     public List<EstimateItemDTO> getItems() {

@@ -17,7 +17,6 @@ public class InvoiceDTO {
     private String invoiceNumber;
     private LocalDateTime issueDate;
     private Double subtotal;
-    private Double taxRate;
     private Double discountPersentage;
     private Double discountCash;
     private Double totalAmount;
@@ -30,7 +29,7 @@ public class InvoiceDTO {
 
 
     // Custom constructor to accept all the fields
-    public InvoiceDTO(Long id, LocalDateTime issueDate, Double subtotal, Double taxRate,
+    public InvoiceDTO(Long id, LocalDateTime issueDate, Double subtotal,
                       Double discountPersentage, Double discountCash, LocalDate dueDate, String status, ClientDTO client,
                       Long createdBy, List<InvoiceItemDTO> items, BusinessInfoDTO businessInfo) {
 
@@ -45,7 +44,6 @@ public class InvoiceDTO {
 
         this.issueDate = issueDate;
         this.subtotal = subtotal;
-        this.taxRate = taxRate;
         this.discountPersentage = discountPersentage;
         this.discountCash = discountCash;
         this.dueDate = dueDate;
@@ -87,15 +85,6 @@ public class InvoiceDTO {
     public void setSubtotal(Double subtotal) {
         this.subtotal = subtotal;
     }
-
-    public Double getTaxRate() {
-        return taxRate;
-    }
-
-    public void setTaxRate(Double taxRate) {
-        this.taxRate = taxRate;
-    }
-
 
     public Double getTotalAmount() {
         return totalAmount;

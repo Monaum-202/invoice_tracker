@@ -15,7 +15,6 @@ public class Invoice {
     private String invoiceNumber;
     private Double subtotal;
     private Double totalAmount;
-    private Double taxRate;
     private Double discountPersentage;
     private Double discountCash;
     private String status; // PENDING, PAID
@@ -43,10 +42,8 @@ public class Invoice {
     @JoinColumn(name = "business_info_id")
     private BusinessInfo businessInfo;
     public void calculateTotalAmount() {
-        Double taxAmount = (this.subtotal * this.taxRate) / 100;
-        Double totalTaxedAmount = this.subtotal + taxAmount;
-        double discountAmount = (totalTaxedAmount * this.discountPersentage)/100;
-        this.totalAmount = this.subtotal + taxAmount - discountAmount - this.discountCash ;
+        double discountAmount = (this.subtotal * this.discountPersentage)/100;
+        this.totalAmount = this.subtotal - discountAmount - this.discountCash ;
     }
     public Long getId() {
         return id;
@@ -127,14 +124,6 @@ public class Invoice {
 
     public void setSubtotal(Double subtotal) {
         this.subtotal = subtotal;
-    }
-
-    public Double getTaxRate() {
-        return taxRate;
-    }
-
-    public void setTaxRate(Double taxRate) {
-        this.taxRate = taxRate;
     }
 
     public List<InvoiceItem> getItems() {

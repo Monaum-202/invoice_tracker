@@ -5,7 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@AllArgsConstructor
+  @AllArgsConstructor
 @NoArgsConstructor
 public class EstimateItemDTO {
     private Long id;

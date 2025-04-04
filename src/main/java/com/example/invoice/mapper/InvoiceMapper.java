@@ -26,7 +26,6 @@ public class InvoiceMapper {
                 invoice.getId(),
                 invoice.getIssueDate(),
                 invoice.getSubtotal(),
-                invoice.getTaxRate(),
                 invoice.getDiscountPersentage(),
                 invoice.getDiscountCash(),
                 invoice.getDueDate(),
@@ -58,7 +57,6 @@ public class InvoiceMapper {
         invoice.setInvoiceNumber(invoiceDTO.getInvoiceNumber());
         invoice.setIssueDate(invoiceDTO.getIssueDate());
         invoice.setSubtotal(invoiceDTO.getSubtotal());
-        invoice.setTaxRate(invoiceDTO.getTaxRate());
         invoice.setDiscountPersentage(invoiceDTO.getDiscountPersentage());
         invoice.setDiscountCash(invoiceDTO.getDiscountCash());
         invoice.setTotalAmount(invoiceDTO.getTotalAmount());
@@ -102,6 +100,10 @@ public class InvoiceMapper {
         return invoice;
     }
 
+
+
+
+
     public BusinessInfoDTO toDTO(BusinessInfo businessInfo) {
         if (businessInfo == null) {
             return null;
@@ -138,6 +140,9 @@ public class InvoiceMapper {
     }
 
 
+
+
+    //Client Mapper
     public ClientDTO toDTO(Client client) {
         if (client == null) {
             return null;

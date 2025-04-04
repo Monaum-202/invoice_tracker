@@ -25,10 +25,7 @@ public class Estimate {
     private LocalDate validUntil;
     private Double totalAmount;
     private String status; // Pending, Approved, Rejected
-
-    @ManyToOne
-    @JoinColumn(name = "client_id", nullable = false)
-    private Client client;
+    private String clientName;
 
     @OneToMany(mappedBy = "estimate", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<EstimateItem> items;
@@ -81,12 +78,13 @@ public class Estimate {
         this.status = status;
     }
 
-    public Client getClient() {
-        return client;
+
+    public String getClientName() {
+        return clientName;
     }
 
-    public void setClient(Client client) {
-        this.client = client;
+    public void setClientName(String clientName) {
+        this.clientName = clientName;
     }
 
     public List<EstimateItem> getItems() {

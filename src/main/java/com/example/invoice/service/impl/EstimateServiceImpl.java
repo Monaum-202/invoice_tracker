@@ -1,10 +1,8 @@
 package com.example.invoice.service.impl;
 
 import com.example.invoice.dto.EstimateDTO;
-import com.example.invoice.entity.Client;
 import com.example.invoice.entity.Estimate;
 import com.example.invoice.mapper.EstimateMapper;
-import com.example.invoice.repository.ClientRepository;
 import com.example.invoice.repository.EstimateRepository;
 import com.example.invoice.service.EstimateService;
 import lombok.RequiredArgsConstructor;
@@ -20,17 +18,12 @@ public class EstimateServiceImpl implements EstimateService {
     @Autowired
     private EstimateRepository estimateRepository;
     @Autowired
-    private ClientRepository clientRepository;
-    @Autowired
     private EstimateMapper estimateMapper;
 
     @Override
     public EstimateDTO createEstimate(EstimateDTO estimateDTO) {
-        Client client = clientRepository.findById(estimateDTO.getClientId())
-                .orElseThrow(() -> new RuntimeException("Client not found"));
 
         Estimate estimate = estimateMapper.toEntity(estimateDTO);
-        estimate.setClient(client);
         estimate = estimateRepository.save(estimate);
 
         return estimateMapper.toDTO(estimate);
