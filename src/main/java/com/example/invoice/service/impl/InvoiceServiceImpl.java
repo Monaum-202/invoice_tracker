@@ -36,6 +36,7 @@ public class InvoiceServiceImpl implements InvoiceService {
 
         Invoice invoice = invoiceMapper.toEntity(invoiceDTO);
         invoice = invoiceRepository.save(invoice);
+        invoice.setInvoiceNumber(invoice.getInvoiceNumber().replace("null",invoice.getId().toString()));
 
         if (invoice.getBusinessInfo() != null) {
             businessInfoRepository.save(invoice.getBusinessInfo());
