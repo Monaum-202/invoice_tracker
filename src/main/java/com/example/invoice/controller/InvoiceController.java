@@ -27,6 +27,7 @@ public class InvoiceController {
 
     @PostMapping
     public ResponseEntity<InvoiceDTO> createInvoice(@RequestBody @Valid InvoiceDTO invoiceDTO) {
+        System.out.println(invoiceDTO.toString());
         return ResponseEntity.status(HttpStatus.CREATED).body(invoiceService.createInvoice(invoiceDTO));
     }
 
