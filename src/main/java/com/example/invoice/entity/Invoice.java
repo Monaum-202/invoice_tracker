@@ -1,7 +1,6 @@
 package com.example.invoice.entity;
 
 import jakarta.persistence.*;
-
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -17,21 +16,20 @@ public class Invoice {
     private Double totalAmount;
     private Double discountPersentage;
     private Double discountCash;
+    private Double paidAmount;
+    private Double dueAmount;
     private String status; // PENDING, PAID
     private LocalDateTime issueDate;
     private LocalDate dueDate;
 
-    // Many invoices belong to one client
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "client_id")
     private Client client;
 
-    // Many invoices can be created by one user
     @ManyToOne
     @JoinColumn(name = "created_by", nullable = false)
     private User createdBy;
 
-    // One invoice can have multiple payments
     @OneToMany(mappedBy = "invoice", cascade = CascadeType.ALL)
     private List<Payment> payments;
 
@@ -41,120 +39,83 @@ public class Invoice {
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "business_info_id")
     private BusinessInfo businessInfo;
+
+    // Automatically generate invoice number after saving
+    @PostPersist
+    public void generateInvoiceNumber() {
+        if (this.invoiceNumber == null && this.id != null) {
+            LocalDate now = LocalDate.now();
+            String currentYear = String.format("%02d", now.getYear() % 100);
+            String currentMonth = String.format("%02d", now.getMonthValue());
+            String currentDay = String.format("%02d", now.getDayOfMonth());
+            String formattedId = String.format("%04d", this.id);
+
+            this.invoiceNumber = "INV" + currentYear + currentMonth + currentDay + formattedId;
+        }
+    }
+
     public void calculateTotalAmount() {
-        double discountAmount = (this.subtotal * this.discountPersentage)/100;
-        this.totalAmount = this.subtotal - discountAmount - this.discountCash ;
-    }
-    public Long getId() {
-        return id;
+        double discountPercentage = this.discountPersentage != null ? this.discountPersentage : 0.0;
+        double discountCash = this.discountCash != null ? this.discountCash : 0.0;
+        double subtotal = this.subtotal != null ? this.subtotal : 0.0;
+
+        double discountAmount = (subtotal * discountPercentage) / 100;
+        this.totalAmount = subtotal - discountAmount - discountCash;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void calculateDueAmount() {
+        double paid = this.paidAmount != null ? this.paidAmount : 0.0;
+        double total = this.totalAmount != null ? this.totalAmount : 0.0;
+        this.dueAmount = total - paid;
     }
 
-    public String getInvoiceNumber() {
-        return invoiceNumber;
-    }
+    // Getters and setters
 
-    public void setInvoiceNumber(String invoiceNumber) {
-        this.invoiceNumber = invoiceNumber;
-    }
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
 
-    public String getStatus() {
-        return status;
-    }
+    public String getInvoiceNumber() { return invoiceNumber; }
+    public void setInvoiceNumber(String invoiceNumber) { this.invoiceNumber = invoiceNumber; }
 
-    public void setStatus(String status) {
-        this.status = status;
-    }
+    public Double getSubtotal() { return subtotal; }
+    public void setSubtotal(Double subtotal) { this.subtotal = subtotal; }
 
-    public LocalDateTime getIssueDate() {
-        return issueDate;
-    }
+    public Double getTotalAmount() { return totalAmount; }
+    public void setTotalAmount(Double totalAmount) { this.totalAmount = totalAmount; }
 
-    public void setIssueDate(LocalDateTime issueDate) {
-        this.issueDate = issueDate;
-    }
+    public Double getDiscountPersentage() { return discountPersentage; }
+    public void setDiscountPersentage(Double discountPersentage) { this.discountPersentage = discountPersentage; }
 
-    public LocalDate getDueDate() {
-        return dueDate;
-    }
+    public Double getDiscountCash() { return discountCash; }
+    public void setDiscountCash(Double discountCash) { this.discountCash = discountCash; }
 
-    public void setDueDate(LocalDate dueDate) {
-        this.dueDate = dueDate;
-    }
+    public Double getPaidAmount() { return paidAmount; }
+    public void setPaidAmount(Double paidAmount) { this.paidAmount = paidAmount; }
 
-    public Client getClient() {
-        return client;
-    }
+    public Double getDueAmount() { return dueAmount; }
+    public void setDueAmount(Double dueAmount) { this.dueAmount = dueAmount; }
 
-    public void setClient(Client client) {
-        this.client = client;
-    }
+    public String getStatus() { return status; }
+    public void setStatus(String status) { this.status = status; }
 
-    public User getCreatedBy() {
-        return createdBy;
-    }
+    public LocalDateTime getIssueDate() { return issueDate; }
+    public void setIssueDate(LocalDateTime issueDate) { this.issueDate = issueDate; }
 
-    public void setCreatedBy(User createdBy) {
-        this.createdBy = createdBy;
-    }
+    public LocalDate getDueDate() { return dueDate; }
+    public void setDueDate(LocalDate dueDate) { this.dueDate = dueDate; }
 
-    public List<Payment> getPayments() {
-        return payments;
-    }
+    public Client getClient() { return client; }
+    public void setClient(Client client) { this.client = client; }
 
-    public void setPayments(List<Payment> payments) {
-        this.payments = payments;
-    }
+    public User getCreatedBy() { return createdBy; }
+    public void setCreatedBy(User createdBy) { this.createdBy = createdBy; }
 
+    public List<Payment> getPayments() { return payments; }
+    public void setPayments(List<Payment> payments) { this.payments = payments; }
 
-    public Double getTotalAmount() {
-        return totalAmount;
-    }
+    public List<InvoiceItem> getItems() { return items; }
+    public void setItems(List<InvoiceItem> items) { this.items = items; }
 
-    public void setTotalAmount(Double totalAmount) {
-        this.totalAmount = totalAmount;
-    }
-
-    public Double getSubtotal() {
-        return subtotal;
-    }
-
-    public void setSubtotal(Double subtotal) {
-        this.subtotal = subtotal;
-    }
-
-    public List<InvoiceItem> getItems() {
-        return items;
-    }
-
-    public void setItems(List<InvoiceItem> items) {
-        this.items = items;
-    }
-
-    public BusinessInfo getBusinessInfo() {
-        return businessInfo;
-    }
-
-    public void setBusinessInfo(BusinessInfo businessInfo) {
-        this.businessInfo = businessInfo;
-    }
-
-    public Double getDiscountPersentage() {
-        return discountPersentage;
-    }
-
-    public void setDiscountPersentage(Double discountPersentage) {
-        this.discountPersentage = discountPersentage;
-    }
-
-    public Double getDiscountCash() {
-        return discountCash;
-    }
-
-    public void setDiscountCash(Double discountCash) {
-        this.discountCash = discountCash;
-    }
+    public BusinessInfo getBusinessInfo() { return businessInfo; }
+    public void setBusinessInfo(BusinessInfo businessInfo) { this.businessInfo = businessInfo; }
 }

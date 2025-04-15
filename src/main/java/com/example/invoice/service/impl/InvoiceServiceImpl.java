@@ -15,6 +15,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+
 @Service
 
 public class InvoiceServiceImpl implements InvoiceService {
@@ -33,24 +35,38 @@ public class InvoiceServiceImpl implements InvoiceService {
 
     @Override
     public InvoiceDTO createInvoice(InvoiceDTO invoiceDTO) {
-
+        // Convert DTO to Entity
         Invoice invoice = invoiceMapper.toEntity(invoiceDTO);
+
+        // Save first to generate ID
         invoice = invoiceRepository.save(invoice);
 
-        String formattedId = String.format("%04d", invoice.getId());
-        invoice.setInvoiceNumber(invoice.getInvoiceNumber().replace("null", formattedId));
+        // Now generate invoice number
+        invoice.setInvoiceNumber(generateInvoiceNumber(invoice.getId()));
 
+        // Save again with the generated invoice number
+        invoice = invoiceRepository.save(invoice);
+
+        // Save businessInfo and client if needed
         if (invoice.getBusinessInfo() != null) {
             businessInfoRepository.save(invoice.getBusinessInfo());
         }
-        if (invoice.getClient() != null){
+
+        if (invoice.getClient() != null) {
             clientRepository.save(invoice.getClient());
         }
 
-        // Then save the invoice
-        invoice = invoiceRepository.save(invoice);
-
         return invoiceMapper.toDTO(invoice);
+    }
+
+    private String generateInvoiceNumber(Long id) {
+        LocalDate now = LocalDate.now();
+        String year = String.format("%02d", now.getYear() % 100);
+        String month = String.format("%02d", now.getMonthValue());
+        String day = String.format("%02d", now.getDayOfMonth());
+        String formattedId = String.format("%04d", id);
+
+        return "INV" + year + month + day + formattedId;
     }
 
     @Override
@@ -89,4 +105,19 @@ public class InvoiceServiceImpl implements InvoiceService {
         Page<Invoice> invoices = invoiceRepository.searchInvoices(invoiceNumber, clientName, status, pageable);
         return invoices.map(invoiceMapper::toDTO);
     }
+
+    @Override
+    public Page<InvoiceDTO> getInvoicesByStatus(String status, Pageable pageable) {
+        return invoiceRepository.findByStatus(status.toUpperCase(), pageable)
+                .map(invoiceMapper::toDTO);
+    }
+
+    @Override
+    public Page<InvoiceDTO> getOverdueInvoices(Pageable pageable) {
+        return invoiceRepository.findOverdueInvoices(pageable)
+                .map(invoiceMapper::toDTO);
+    }
+
+
+
 }

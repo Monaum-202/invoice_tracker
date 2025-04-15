@@ -9,6 +9,7 @@ import com.example.invoice.repository.ClientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -17,6 +18,8 @@ import java.util.stream.Collectors;
 public class InvoiceMapper {
     @Autowired
     private ClientRepository clientRepository;
+    private LocalDate dueDate;
+
     public InvoiceDTO toDTO(Invoice invoice) {
         if (invoice == null) {
             return null;
@@ -24,10 +27,14 @@ public class InvoiceMapper {
 
         return new InvoiceDTO(
                 invoice.getId(),
+                invoice.getInvoiceNumber(),
                 invoice.getIssueDate(),
                 invoice.getSubtotal(),
+                invoice.getTotalAmount(),
                 invoice.getDiscountPersentage(),
                 invoice.getDiscountCash(),
+                invoice.getPaidAmount(),
+                invoice.getDueAmount(),
                 invoice.getDueDate(),
                 invoice.getStatus(),
                 toDTO(invoice.getClient()),
@@ -59,9 +66,9 @@ public class InvoiceMapper {
         invoice.setSubtotal(invoiceDTO.getSubtotal());
         invoice.setDiscountPersentage(invoiceDTO.getDiscountPersentage());
         invoice.setDiscountCash(invoiceDTO.getDiscountCash());
-        invoice.setTotalAmount(invoiceDTO.getTotalAmount());
-        invoice.setDueDate(invoiceDTO.getDueDate());
+        invoice.setDueDate(dueDate);
         invoice.setStatus(invoiceDTO.getStatus());
+        invoice.setPaidAmount(invoiceDTO.getPaidAmount());
 
         // Set the client entity (assuming you have a method to get a Client by ID)
         ClientDTO clientDTO = invoiceDTO.getClient();
@@ -97,6 +104,7 @@ public class InvoiceMapper {
                 .collect(Collectors.toList());
         invoice.setItems(items);
         invoice.calculateTotalAmount();
+        invoice.calculateDueAmount();
         return invoice;
     }
 

@@ -68,4 +68,58 @@ public class InvoiceController {
             Pageable pageable) {
         return invoiceService.searchInvoices(invoiceNumber, clientName, status, pageable);
     }
+
+
+    @GetMapping("/paid")
+    public ResponseEntity<Page<InvoiceDTO>> getPaidInvoices(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "id") String sortBy,
+            @RequestParam(defaultValue = "asc") String direction) {
+
+        Pageable pageable = PageRequest.of(
+                page,
+                size,
+                Sort.by(direction.equalsIgnoreCase("asc") ? Sort.Direction.ASC : Sort.Direction.DESC, sortBy)
+        );
+
+        Page<InvoiceDTO> paidInvoices = invoiceService.getInvoicesByStatus("PAID", pageable);
+        return ResponseEntity.ok(paidInvoices);
+    }
+
+    @GetMapping("/unpaid")
+    public ResponseEntity<Page<InvoiceDTO>> getUnpaidInvoices(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "id") String sortBy,
+            @RequestParam(defaultValue = "asc") String direction) {
+
+        Pageable pageable = PageRequest.of(
+                page,
+                size,
+                Sort.by(direction.equalsIgnoreCase("asc") ? Sort.Direction.ASC : Sort.Direction.DESC, sortBy)
+        );
+
+        Page<InvoiceDTO> unpaidInvoices = invoiceService.getInvoicesByStatus("UNPAID", pageable);
+        return ResponseEntity.ok(unpaidInvoices);
+    }
+
+    @GetMapping("/overdue")
+    public ResponseEntity<Page<InvoiceDTO>> getOverdueInvoices(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "id") String sortBy,
+            @RequestParam(defaultValue = "asc") String direction) {
+
+        Pageable pageable = PageRequest.of(
+                page, size,
+                Sort.by(direction.equalsIgnoreCase("asc") ? Sort.Direction.ASC : Sort.Direction.DESC, sortBy)
+        );
+
+        Page<InvoiceDTO> overdueInvoices = invoiceService.getOverdueInvoices(pageable);
+        return ResponseEntity.ok(overdueInvoices);
+    }
+
+
+
 }

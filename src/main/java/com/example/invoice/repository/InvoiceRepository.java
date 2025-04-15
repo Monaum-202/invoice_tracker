@@ -26,4 +26,12 @@ public interface InvoiceRepository extends JpaRepository<Invoice, Long> {
             @Param("clientName") String clientName,
             @Param("status") String status,
             Pageable pageable);
+
+
+
+    Page<Invoice> findByStatus(String status, Pageable pageable);
+
+    @Query("SELECT i FROM Invoice i WHERE i.dueDate < CURRENT_DATE AND i.status <> 'PAID'")
+    Page<Invoice> findOverdueInvoices(Pageable pageable);
+
 }

@@ -20,6 +20,8 @@ public class InvoiceDTO {
     private Double discountPersentage;
     private Double discountCash;
     private Double totalAmount;
+    private Double paidAmount;
+    private Double dueAmount;
     private LocalDate dueDate;
     private String status; // PENDING, PAID, OVERDUE
     private ClientDTO client;
@@ -29,23 +31,19 @@ public class InvoiceDTO {
 
 
     // Custom constructor to accept all the fields
-    public InvoiceDTO(Long id, LocalDateTime issueDate, Double subtotal,
-                      Double discountPersentage, Double discountCash, LocalDate dueDate, String status, ClientDTO client,
+    public InvoiceDTO(Long id, String invoiceNumber, LocalDateTime issueDate, Double subtotal, Double totalAmount,
+                      Double discountPersentage, Double discountCash, Double paidAmount, Double dueAmount, LocalDate dueDate, String status, ClientDTO client,
                       Long createdBy, List<InvoiceItemDTO> items, BusinessInfoDTO businessInfo) {
 
         this.id = id;
-
-        LocalDate currentDate = LocalDate.now();
-        String currentYear = String.format("%02d", currentDate.getYear() % 100);  // Last two digits of the year
-        String currentMonth = String.format("%02d", currentDate.getMonthValue());  // MM format (e.g., "03" for March)
-        String currentDay = String.format("%02d",currentDate.getDayOfMonth());
-        String formattedId = String.format("%04d", id);
-        this.invoiceNumber = "INV" + currentYear + currentMonth+ currentDay + formattedId;
-
+        this.invoiceNumber = invoiceNumber;
         this.issueDate = issueDate;
         this.subtotal = subtotal;
+        this.totalAmount = totalAmount;
         this.discountPersentage = discountPersentage;
         this.discountCash = discountCash;
+        this.paidAmount = paidAmount;
+        this.dueAmount = dueAmount;
         this.dueDate = dueDate;
         this.status = status;
         this.client = client;
@@ -157,5 +155,21 @@ public class InvoiceDTO {
 
     public void setDiscountCash(Double discountCash) {
         this.discountCash = discountCash;
+    }
+
+    public Double getPaidAmount() {
+        return paidAmount;
+    }
+
+    public void setPaidAmount(Double paidAmount) {
+        this.paidAmount = paidAmount;
+    }
+
+    public Double getDueAmount() {
+        return dueAmount;
+    }
+
+    public void setDueAmount(Double dueAmount) {
+        this.dueAmount = dueAmount;
     }
 }

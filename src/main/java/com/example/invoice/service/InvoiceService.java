@@ -12,4 +12,10 @@ public interface InvoiceService {
     void deleteInvoice(Long id);
 
     Page<InvoiceDTO> searchInvoices(String invoiceNumber, String clientName, String status, Pageable pageable);
+
+    Page<InvoiceDTO> getInvoicesByStatus(String status, Pageable pageable);
+
+    Page<InvoiceDTO> getOverdueInvoices(Pageable pageable);
+
+
 }
