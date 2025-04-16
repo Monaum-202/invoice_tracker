@@ -66,7 +66,7 @@ public class InvoiceMapper {
         invoice.setSubtotal(invoiceDTO.getSubtotal());
         invoice.setDiscountPersentage(invoiceDTO.getDiscountPersentage());
         invoice.setDiscountCash(invoiceDTO.getDiscountCash());
-        invoice.setDueDate(dueDate);
+        invoice.setDueDate(invoiceDTO.getDueDate());
         invoice.setStatus(invoiceDTO.getStatus());
         invoice.setPaidAmount(invoiceDTO.getPaidAmount());
 
