@@ -15,7 +15,8 @@ import org.springframework.web.bind.annotation.*;
 @CrossOrigin(origins = "*")
 public class ClientController {
 
-    private final ClientService clientService;
+    @Autowired
+    private ClientService clientService;
 
     @Autowired
     public ClientController(ClientService clientService) {

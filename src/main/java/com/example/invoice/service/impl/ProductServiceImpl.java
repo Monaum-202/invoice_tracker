@@ -10,7 +10,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class ProductServiceImpl implements ProductService {
@@ -52,10 +54,19 @@ public class ProductServiceImpl implements ProductService {
                 .map(productMapper::toDTO);
     }
 
+//    @Override
+//    public Page<ProductDTO> getAllProducts(Pageable pageable) {
+//        return productRepository.findAll(pageable)
+//                .map(productMapper::toDTO);
+//    }
+
+
     @Override
-    public Page<ProductDTO> getAllProducts(Pageable pageable) {
-        return productRepository.findAll(pageable)
-                .map(productMapper::toDTO);
+    public List<ProductDTO> getAllProducts() {
+        List<Product> productEntities = productRepository.findAll();
+        return productEntities.stream()
+                .map(productMapper::toDTO)
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -66,7 +77,6 @@ public class ProductServiceImpl implements ProductService {
         productRepository.deleteById(id);
     }
 
-    // ✅ Added the missing saveProduct method
     @Override
     public ProductDTO saveProduct(ProductDTO productDTO) {
         Product product = productMapper.toEntity(productDTO);

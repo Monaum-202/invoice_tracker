@@ -20,6 +20,9 @@ public class User {
     @OneToMany(mappedBy = "createdBy", cascade = CascadeType.ALL)
     private List<Invoice> invoices;
 
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    private BusinessInfo businessInfo;
+
     public Long getId() {
         return id;
     }

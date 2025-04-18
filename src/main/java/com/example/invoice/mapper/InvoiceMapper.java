@@ -38,6 +38,7 @@ public class InvoiceMapper {
                 invoice.getDueDate(),
                 invoice.getStatus(),
                 toDTO(invoice.getClient()),
+                invoice.getCompanyName(),
                 invoice.getCreatedBy().getId(),
                 invoice.getItems().stream()
                         .map(item -> new InvoiceItemDTO(
@@ -48,8 +49,8 @@ public class InvoiceMapper {
                                 item.getTotalPrice(),
                                 invoice.getId() // Pass invoice ID to the DTO
                         ))
-                        .collect(Collectors.toList()),
-                toDTO(invoice.getBusinessInfo()) // Assuming you have a method to map BusinessInfo to BusinessInfoDTO
+                        .collect(Collectors.toList())
+
         );
     }
 
@@ -69,6 +70,7 @@ public class InvoiceMapper {
         invoice.setDueDate(invoiceDTO.getDueDate());
         invoice.setStatus(invoiceDTO.getStatus());
         invoice.setPaidAmount(invoiceDTO.getPaidAmount());
+        invoice.setCompanyName(invoiceDTO.getCompanyName());
 
         // Set the client entity (assuming you have a method to get a Client by ID)
         ClientDTO clientDTO = invoiceDTO.getClient();
@@ -83,13 +85,11 @@ public class InvoiceMapper {
                 invoice.setClient(client);
             }
         }
+
         User user = new User();
         user.setId(invoiceDTO.getCreatedBy());
         invoice.setCreatedBy(user);
 
-        // Set BusinessInfo (assuming you have a method to convert BusinessInfoDTO to BusinessInfo)
-        BusinessInfo businessInfo = toEntity(invoiceDTO.getBusinessInfo());
-        invoice.setBusinessInfo(businessInfo);
 
         // Set Invoice Items (using the constructor with parameters)
         List<InvoiceItem> items = invoiceDTO.getItems().stream()
@@ -108,44 +108,6 @@ public class InvoiceMapper {
         return invoice;
     }
 
-
-
-
-
-    public BusinessInfoDTO toDTO(BusinessInfo businessInfo) {
-        if (businessInfo == null) {
-            return null;
-        }
-
-        return new BusinessInfoDTO(
-                businessInfo.getId(),
-                businessInfo.getBusinessName(),
-                businessInfo.getAddress(),
-                businessInfo.getPhone(),
-                businessInfo.getEmail(),
-                businessInfo.getTaxId(),
-                businessInfo.getWebsite()
-        );
-    }
-
-
-    // Convert BusinessInfoDTO to BusinessInfo Entity
-    public BusinessInfo toEntity(BusinessInfoDTO businessInfoDTO) {
-        if (businessInfoDTO == null) {
-            return null;
-        }
-
-        BusinessInfo businessInfo = new BusinessInfo();
-        businessInfo.setId(businessInfoDTO.getId());
-        businessInfo.setBusinessName(businessInfoDTO.getBusinessName());
-        businessInfo.setAddress(businessInfoDTO.getAddress());
-        businessInfo.setPhone(businessInfoDTO.getPhone());
-        businessInfo.setEmail(businessInfoDTO.getEmail());
-        businessInfo.setTaxId(businessInfoDTO.getTaxId());
-        businessInfo.setWebsite(businessInfoDTO.getWebsite());
-
-        return businessInfo;
-    }
 
 
 

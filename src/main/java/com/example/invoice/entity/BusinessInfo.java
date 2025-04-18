@@ -21,7 +21,12 @@ public class BusinessInfo {
     private String website;
     private String taxId;  // Optional: Tax Identification Number
 
+    @Lob
+    private byte[] logo;
 
+    @OneToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 
 
     public Long getId() {
@@ -78,5 +83,22 @@ public class BusinessInfo {
 
     public void setWebsite(String website) {
         this.website = website;
+    }
+
+
+    public byte[] getLogo() {
+        return logo;
+    }
+
+    public void setLogo(byte[] logo) {
+        this.logo = logo;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }

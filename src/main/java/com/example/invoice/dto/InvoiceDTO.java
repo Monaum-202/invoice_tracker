@@ -28,12 +28,13 @@ public class InvoiceDTO {
     private Long createdBy;
     private List<InvoiceItemDTO> items; // Invoice items
     private BusinessInfoDTO businessInfo;
+    private String companyName;
 
 
     // Custom constructor to accept all the fields
     public InvoiceDTO(Long id, String invoiceNumber, LocalDateTime issueDate, Double subtotal, Double totalAmount,
-                      Double discountPersentage, Double discountCash, Double paidAmount, Double dueAmount, LocalDate dueDate, String status, ClientDTO client,
-                      Long createdBy, List<InvoiceItemDTO> items, BusinessInfoDTO businessInfo) {
+                      Double discountPersentage, Double discountCash, Double paidAmount, Double dueAmount, LocalDate dueDate, String status, ClientDTO client, String companyName,
+                      Long createdBy, List<InvoiceItemDTO> items) {
 
         this.id = id;
         this.invoiceNumber = invoiceNumber;
@@ -47,9 +48,10 @@ public class InvoiceDTO {
         this.dueDate = dueDate;
         this.status = status;
         this.client = client;
+        this.companyName = companyName;
         this.createdBy = createdBy;
         this.items = items;
-        this.businessInfo = businessInfo;
+
     }
 
     public Long getId() {
@@ -171,5 +173,13 @@ public class InvoiceDTO {
 
     public void setDueAmount(Double dueAmount) {
         this.dueAmount = dueAmount;
+    }
+
+    public String getCompanyName() {
+        return companyName;
+    }
+
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName;
     }
 }

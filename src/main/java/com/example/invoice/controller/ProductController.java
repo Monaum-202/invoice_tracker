@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -35,9 +36,15 @@ public class ProductController {
     }
 
 
+//    @GetMapping
+//    public ResponseEntity<Page<ProductDTO>> getAllProducts(Pageable pageable) {
+//        Page<ProductDTO> products = productService.getAllProducts(pageable);
+//        return ResponseEntity.ok(products);
+//    }
+
     @GetMapping
-    public ResponseEntity<Page<ProductDTO>> getAllProducts(Pageable pageable) {
-        Page<ProductDTO> products = productService.getAllProducts(pageable);
+    public ResponseEntity<List<ProductDTO>> getAllProducts() {
+        List<ProductDTO> products = productService.getAllProducts();
         return ResponseEntity.ok(products);
     }
 

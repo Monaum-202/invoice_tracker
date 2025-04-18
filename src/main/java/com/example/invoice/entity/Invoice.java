@@ -22,12 +22,14 @@ public class Invoice {
     private LocalDateTime issueDate;
     private LocalDate dueDate;
 
+    private String companyName;
+
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "client_id")
     private Client client;
 
     @ManyToOne
-    @JoinColumn(name = "created_by", nullable = false)
+    @JoinColumn(name = "user_id")
     private User createdBy;
 
     @OneToMany(mappedBy = "invoice", cascade = CascadeType.ALL)
@@ -36,9 +38,9 @@ public class Invoice {
     @OneToMany(mappedBy = "invoice", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<InvoiceItem> items;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "business_info_id")
-    private BusinessInfo businessInfo;
+//    @OneToOne(cascade = CascadeType.ALL)
+//    @JoinColumn(name = "business_info_id")
+//    private BusinessInfo businessInfo;
 
     // Automatically generate invoice number after saving
     @PostPersist
@@ -116,6 +118,14 @@ public class Invoice {
     public List<InvoiceItem> getItems() { return items; }
     public void setItems(List<InvoiceItem> items) { this.items = items; }
 
-    public BusinessInfo getBusinessInfo() { return businessInfo; }
-    public void setBusinessInfo(BusinessInfo businessInfo) { this.businessInfo = businessInfo; }
+//    public BusinessInfo getBusinessInfo() { return businessInfo; }
+//    public void setBusinessInfo(BusinessInfo businessInfo) { this.businessInfo = businessInfo; }
+
+    public String getCompanyName() {
+        return companyName;
+    }
+
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName;
+    }
 }

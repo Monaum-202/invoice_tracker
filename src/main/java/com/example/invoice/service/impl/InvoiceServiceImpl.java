@@ -47,10 +47,6 @@ public class InvoiceServiceImpl implements InvoiceService {
         // Save again with the generated invoice number
         invoice = invoiceRepository.save(invoice);
 
-        // Save businessInfo and client if needed
-        if (invoice.getBusinessInfo() != null) {
-            businessInfoRepository.save(invoice.getBusinessInfo());
-        }
 
         if (invoice.getClient() != null) {
             clientRepository.save(invoice.getClient());

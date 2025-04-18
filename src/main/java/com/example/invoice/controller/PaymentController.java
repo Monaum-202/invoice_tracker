@@ -3,6 +3,7 @@ package com.example.invoice.controller;
 import com.example.invoice.dto.PaymentDTO;
 import com.example.invoice.service.PaymentService;
 import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -17,7 +18,8 @@ import org.springframework.web.bind.annotation.*;
 @CrossOrigin(origins = "*")
 public class PaymentController {
 
-    private final PaymentService paymentService;
+    @Autowired
+    private PaymentService paymentService;
 
     public PaymentController(PaymentService paymentService) {
         this.paymentService = paymentService;
