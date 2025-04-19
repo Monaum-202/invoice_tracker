@@ -17,18 +17,23 @@ public class BusinessInfoServiceImpl implements BusinessInfoService {
     @Autowired
     private BusinessInfoRepository businessInfoRepository;
 
+    @Autowired
+    private BusinessInfoMapper businessInfoMapper;
+
+
     @Override
     public BusinessInfoDTO saveBusinessInfo(BusinessInfoDTO dto) {
-        BusinessInfo entity = BusinessInfoMapper.toEntity(dto);
+        BusinessInfo entity = businessInfoMapper.toEntity(dto);
         BusinessInfo saved = businessInfoRepository.save(entity);
-        return BusinessInfoMapper.toDTO(saved);
+        return businessInfoMapper.toDTO(saved);
     }
+
 
     @Override
     public BusinessInfoDTO getBusinessInfo(Long id) {
         BusinessInfo entity = businessInfoRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("BusinessInfo not found"));
-        return BusinessInfoMapper.toDTO(entity);
+        return businessInfoMapper.toDTO(entity);
     }
 
     @Override
@@ -38,7 +43,16 @@ public class BusinessInfoServiceImpl implements BusinessInfoService {
 
         entity.setLogo(file.getBytes());
         BusinessInfo updated = businessInfoRepository.save(entity);
-        return BusinessInfoMapper.toDTO(updated);
+        return businessInfoMapper.toDTO(updated);
     }
+
+    @Override
+    public BusinessInfoDTO getBusinessInfoByUsername(String username) {
+        BusinessInfo entity = businessInfoRepository
+                .findFirstByCreatedBy_UserName(username)
+                .orElseThrow(() -> new RuntimeException("Business info not found for username: " + username));
+        return businessInfoMapper.toDTO(entity);
+    }
+
 }
 

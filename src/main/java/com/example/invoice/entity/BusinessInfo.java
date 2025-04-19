@@ -25,9 +25,9 @@ public class BusinessInfo {
     @Lob
     private byte[] logo;
 
-    @OneToOne
-    @JoinColumn(name = "user_id")
-    private Users user;
+    @ManyToOne(cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "user_name")
+    private Users createdBy;
 
 
     public Long getId() {
@@ -95,11 +95,6 @@ public class BusinessInfo {
         this.logo = logo;
     }
 
-    public Users getUser() {
-        return user;
-    }
-
-    public void setUser(Users user) {
-        this.user = user;
-    }
+    public Users getCreatedBy() { return createdBy; }
+    public void setCreatedBy(Users createdBy) { this.createdBy = createdBy; }
 }

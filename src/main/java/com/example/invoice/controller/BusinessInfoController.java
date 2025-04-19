@@ -26,6 +26,12 @@ public class BusinessInfoController {
         return ResponseEntity.ok(businessInfoService.getBusinessInfo(id));
     }
 
+    @GetMapping("/by-username/{username}")
+    public ResponseEntity<BusinessInfoDTO> getByUsername(@PathVariable String username) {
+        return ResponseEntity.ok(businessInfoService.getBusinessInfoByUsername(username));
+    }
+
+
     @PostMapping("/upload-logo/{id}")
     public ResponseEntity<BusinessInfoDTO> uploadLogo(@PathVariable Long id, @RequestParam("file") MultipartFile file) throws IOException {
         return ResponseEntity.ok(businessInfoService.updateLogo(id, file));

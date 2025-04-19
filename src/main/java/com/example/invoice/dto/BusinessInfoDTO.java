@@ -13,6 +13,7 @@ public class BusinessInfoDTO {
     private String website;
     private String email;
     private String taxId;
+    private String createdBy;
 
     // Base64 encoded image string for logo
     private String logoBase64;
@@ -24,7 +25,7 @@ public class BusinessInfoDTO {
     }
 
     public BusinessInfoDTO(Long id, String businessName, String address, String phone,
-                           String email, String taxId, String website, String logoBase64) {
+                           String email, String taxId, String website, String logoBase64,String createdBy) {
         this.id = id;
         this.businessName = businessName;
         this.address = address;
@@ -33,6 +34,7 @@ public class BusinessInfoDTO {
         this.taxId = taxId;
         this.website = website;
         this.logoBase64 = logoBase64;
+        this.createdBy = createdBy;
     }
 
 
@@ -98,5 +100,13 @@ public class BusinessInfoDTO {
 
     public void setLogoBase64(String logoBase64) {
         this.logoBase64 = logoBase64;
+    }
+
+    public String getCreatedBy() {
+        return createdBy;
+    }
+
+    public void setCreatedBy(String createdBy) {
+        this.createdBy = createdBy;
     }
 }
