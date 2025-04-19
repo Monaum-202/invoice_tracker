@@ -1,8 +1,5 @@
 package com.example.invoice.dto;
 
-import com.example.invoice.entity.Client;
-import com.example.invoice.entity.User;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -25,7 +22,7 @@ public class InvoiceDTO {
     private LocalDate dueDate;
     private String status; // PENDING, PAID, OVERDUE
     private ClientDTO client;
-    private Long createdBy;
+    private String createdBy;
     private List<InvoiceItemDTO> items; // Invoice items
     private BusinessInfoDTO businessInfo;
     private String companyName;
@@ -34,7 +31,7 @@ public class InvoiceDTO {
     // Custom constructor to accept all the fields
     public InvoiceDTO(Long id, String invoiceNumber, LocalDateTime issueDate, Double subtotal, Double totalAmount,
                       Double discountPersentage, Double discountCash, Double paidAmount, Double dueAmount, LocalDate dueDate, String status, ClientDTO client, String companyName,
-                      Long createdBy, List<InvoiceItemDTO> items) {
+                      String createdBy, List<InvoiceItemDTO> items) {
 
         this.id = id;
         this.invoiceNumber = invoiceNumber;
@@ -135,11 +132,11 @@ public class InvoiceDTO {
         this.businessInfo = businessInfo;
     }
 
-    public Long getCreatedBy() {
+    public String getCreatedBy() {
         return createdBy;
     }
 
-    public void setCreatedBy(Long createdBy) {
+    public void setCreatedBy(String createdBy) {
         this.createdBy = createdBy;
     }
 

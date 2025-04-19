@@ -1,5 +1,6 @@
 package com.example.invoice.entity;
 
+import com.example.invoice.entity.security.Users;
 import jakarta.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -28,9 +29,9 @@ public class Invoice {
     @JoinColumn(name = "client_id")
     private Client client;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User createdBy;
+    @ManyToOne(cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "user_name")
+    private Users createdBy;
 
     @OneToMany(mappedBy = "invoice", cascade = CascadeType.ALL)
     private List<Payment> payments;
@@ -38,9 +39,6 @@ public class Invoice {
     @OneToMany(mappedBy = "invoice", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<InvoiceItem> items;
 
-//    @OneToOne(cascade = CascadeType.ALL)
-//    @JoinColumn(name = "business_info_id")
-//    private BusinessInfo businessInfo;
 
     // Automatically generate invoice number after saving
     @PostPersist
@@ -109,8 +107,8 @@ public class Invoice {
     public Client getClient() { return client; }
     public void setClient(Client client) { this.client = client; }
 
-    public User getCreatedBy() { return createdBy; }
-    public void setCreatedBy(User createdBy) { this.createdBy = createdBy; }
+    public Users getCreatedBy() { return createdBy; }
+    public void setCreatedBy(Users createdBy) { this.createdBy = createdBy; }
 
     public List<Payment> getPayments() { return payments; }
     public void setPayments(List<Payment> payments) { this.payments = payments; }

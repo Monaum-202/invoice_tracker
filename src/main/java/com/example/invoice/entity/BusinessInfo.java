@@ -1,5 +1,6 @@
 package com.example.invoice.entity;
 
+import com.example.invoice.entity.security.Users;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -26,7 +27,7 @@ public class BusinessInfo {
 
     @OneToOne
     @JoinColumn(name = "user_id")
-    private User user;
+    private Users user;
 
 
     public Long getId() {
@@ -94,11 +95,11 @@ public class BusinessInfo {
         this.logo = logo;
     }
 
-    public User getUser() {
+    public Users getUser() {
         return user;
     }
 
-    public void setUser(User user) {
+    public void setUser(Users user) {
         this.user = user;
     }
 }

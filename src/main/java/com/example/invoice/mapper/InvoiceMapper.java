@@ -5,7 +5,9 @@ import com.example.invoice.dto.ClientDTO;
 import com.example.invoice.dto.InvoiceDTO;
 import com.example.invoice.dto.InvoiceItemDTO;
 import com.example.invoice.entity.*;
+import com.example.invoice.entity.security.Users;
 import com.example.invoice.repository.ClientRepository;
+import com.example.invoice.repository.security.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -18,6 +20,10 @@ import java.util.stream.Collectors;
 public class InvoiceMapper {
     @Autowired
     private ClientRepository clientRepository;
+
+    @Autowired
+    private UserRepository usersRepository;
+
     private LocalDate dueDate;
 
     public InvoiceDTO toDTO(Invoice invoice) {
@@ -39,7 +45,7 @@ public class InvoiceMapper {
                 invoice.getStatus(),
                 toDTO(invoice.getClient()),
                 invoice.getCompanyName(),
-                invoice.getCreatedBy().getId(),
+                invoice.getCreatedBy().getUserName(),
                 invoice.getItems().stream()
                         .map(item -> new InvoiceItemDTO(
                                 item.getId(),
@@ -86,9 +92,13 @@ public class InvoiceMapper {
             }
         }
 
-        User user = new User();
-        user.setId(invoiceDTO.getCreatedBy());
+
+
+        Users user = usersRepository.findByUserName(invoiceDTO.getCreatedBy())
+                .orElseThrow(() -> new RuntimeException("User not found: " + invoiceDTO.getCreatedBy()));
+
         invoice.setCreatedBy(user);
+
 
 
         // Set Invoice Items (using the constructor with parameters)
