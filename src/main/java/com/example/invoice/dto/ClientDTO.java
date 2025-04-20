@@ -5,8 +5,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
 public class ClientDTO {
     private Long id;
     private String name;
@@ -14,6 +12,7 @@ public class ClientDTO {
     private String phone;
     private String nid;
     private String address;
+    private String createdBy;
 
     public Long getId() {
         return id;

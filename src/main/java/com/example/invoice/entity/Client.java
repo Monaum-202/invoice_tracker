@@ -1,5 +1,6 @@
 package com.example.invoice.entity;
 
+import com.example.invoice.entity.security.Users;
 import jakarta.persistence.*;
 import java.util.List;
 
@@ -22,6 +23,10 @@ public class Client {
 
     @OneToMany(mappedBy = "client", cascade = CascadeType.ALL)
     private List<Payment> payments;
+
+    @ManyToOne(cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "user_name")
+    private Users createdBy;
 
     public Long getId() {
         return id;
@@ -85,5 +90,13 @@ public class Client {
 
     public void setPayments(List<Payment> payments) {
         this.payments = payments;
+    }
+
+    public Users getCreatedBy() {
+        return createdBy;
+    }
+
+    public void setCreatedBy(Users createdBy) {
+        this.createdBy = createdBy;
     }
 }

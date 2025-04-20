@@ -25,5 +25,7 @@ public interface ClientRepository extends JpaRepository<Client, Long> {
             @Param("email") String email,
             @Param("phone") String phone,
             Pageable pageable);
+
+    Page<Client> findAllByCreatedBy_Username(String username, Pageable pageable);
 }
 

@@ -1,5 +1,6 @@
 package com.example.invoice.entity;
 
+import com.example.invoice.entity.security.Users;
 import jakarta.persistence.*;
 
 
@@ -18,7 +19,7 @@ public class Product {
     @Column(nullable = false)
     private String name;
 
-    @Column(nullable = false)
+
     private String description;
 
     @Column(nullable = false)
@@ -27,6 +28,10 @@ public class Product {
 
     @Column(nullable = false)
     private double taxRate; // Tax rate for the individual product (in percentage)
+
+    @ManyToOne(cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "user_name")
+    private Users createdBy;
 
     // Constructors
     public Product() {}

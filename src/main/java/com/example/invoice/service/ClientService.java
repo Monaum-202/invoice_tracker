@@ -1,6 +1,7 @@
 package com.example.invoice.service;
 
 import com.example.invoice.dto.ClientDTO;
+import com.example.invoice.entity.Client;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -12,5 +13,8 @@ public interface ClientService {
     void deleteClient(Long id);
 
     Page<ClientDTO> searchClients(String name, String email, String phone, Pageable pageable);
+
+    Page<ClientDTO> getClientsByCreatedBy(String username, Pageable pageable);
+
 }
 

@@ -12,12 +12,9 @@ import java.util.Base64;
 @Component
 public class BusinessInfoMapper {
 
-    private final UserRepository usersRepository;
-
     @Autowired
-    public BusinessInfoMapper(UserRepository usersRepository) {
-        this.usersRepository = usersRepository;
-    }
+    private UserRepository usersRepository;
+
 
     public BusinessInfoDTO toDTO(BusinessInfo entity) {
         BusinessInfoDTO dto = new BusinessInfoDTO();

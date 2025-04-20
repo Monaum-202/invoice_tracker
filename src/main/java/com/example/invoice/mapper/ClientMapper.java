@@ -2,50 +2,40 @@ package com.example.invoice.mapper;
 
 import com.example.invoice.dto.ClientDTO;
 import com.example.invoice.entity.Client;
+import com.example.invoice.entity.security.Users;
+import com.example.invoice.repository.security.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
 public class ClientMapper {
+    @Autowired
+    private UserRepository userRepository;
 
-    // Convert Client Entity to ClientDTO
     public ClientDTO toDTO(Client client) {
-        if (client == null) {
-            return null;
-        }
-
-        ClientDTO clientDTO = new ClientDTO();
-        clientDTO.setId(client.getId());
-        clientDTO.setName(client.getName());
-        clientDTO.setEmail(client.getEmail());
-        clientDTO.setPhone(client.getPhone());
-        clientDTO.setAddress(client.getAddress());
-        return clientDTO;
+        ClientDTO dto = new ClientDTO();
+        dto.setId(client.getId());
+        dto.setName(client.getName());
+        dto.setEmail(client.getEmail());
+        dto.setPhone(client.getPhone());
+        dto.setNid(client.getNid());
+        dto.setAddress(client.getAddress());
+        dto.setCreatedBy(client.getCreatedBy().getUserName());
+        return dto;
     }
 
-    // Convert ClientDTO to Client Entity
-    public Client toEntity(ClientDTO clientDTO) {
-        if (clientDTO == null) {
-            return null;
-        }
-
+    public Client toEntity(ClientDTO dto) {
         Client client = new Client();
-        client.setId(clientDTO.getId());
-        client.setName(clientDTO.getName());
-        client.setEmail(clientDTO.getEmail());
-        client.setPhone(clientDTO.getPhone());
-        client.setAddress(clientDTO.getAddress());
-        return client;
-    }
-
-    // Update existing Client Entity with ClientDTO data
-    public void updateEntityFromDTO(ClientDTO clientDTO, Client client) {
-        if (clientDTO == null || client == null) {
-            return;
+        client.setId(dto.getId());
+        client.setName(dto.getName());
+        client.setEmail(dto.getEmail());
+        client.setPhone(dto.getPhone());
+        client.setNid(dto.getNid());
+        client.setAddress(dto.getAddress());
+        if (dto.getCreatedBy() != null) {
+            Users user = userRepository.findByUserName(dto.getCreatedBy()).orElseThrow(() -> new RuntimeException("User not found: " + dto.getCreatedBy()));
+            client.setCreatedBy(user);
         }
-
-        client.setName(clientDTO.getName());
-        client.setEmail(clientDTO.getEmail());
-        client.setPhone(clientDTO.getPhone());
-        client.setAddress(clientDTO.getAddress());
+        return client;
     }
 }

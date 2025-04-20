@@ -4,6 +4,7 @@ import com.example.invoice.dto.ClientDTO;
 import com.example.invoice.entity.Client;
 import com.example.invoice.mapper.ClientMapper;
 import com.example.invoice.repository.ClientRepository;
+import com.example.invoice.repository.security.UserRepository;
 import com.example.invoice.service.ClientService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,8 @@ public class ClientServiceImpl implements ClientService {
 
     @Autowired
     private ClientRepository clientRepository;
+
+
 
     @Autowired
     private ClientMapper clientMapper; // Inject the clientMapper for conversion between DTO and Entity
@@ -39,6 +42,13 @@ public class ClientServiceImpl implements ClientService {
     }
 
     @Override
+    public Page<ClientDTO> getClientsByCreatedBy(String username, Pageable pageable) {
+        return clientRepository.findAllByCreatedBy_Username(username, pageable)
+                .map(clientMapper::toDTO);
+    }
+
+
+        @Override
     public ClientDTO getClientById(Long id) {
         // Find the client by its ID and convert it to ClientDTO
         Client client = clientRepository.findById(id)
