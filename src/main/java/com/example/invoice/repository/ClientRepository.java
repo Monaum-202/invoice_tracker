@@ -13,8 +13,10 @@ import java.util.Optional;
 @Repository
 public interface ClientRepository extends JpaRepository<Client, Long> {
     Optional<Client> findByEmail(String email);
+
     Page<Client> findAll(Pageable pageable);
-    Client findByNid(String nid);
+
+    Client findByPhone(String phone);
 
     @Query("SELECT c FROM Client c WHERE " +
             "(:name IS NULL OR c.name LIKE %:name%) " +
@@ -26,6 +28,6 @@ public interface ClientRepository extends JpaRepository<Client, Long> {
             @Param("phone") String phone,
             Pageable pageable);
 
-    Page<Client> findAllByCreatedBy_Username(String username, Pageable pageable);
+    Page<Client> findAllByCreatedBy_UserName(String userName, Pageable pageable);
 }
 

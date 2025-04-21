@@ -42,8 +42,8 @@ public class ClientServiceImpl implements ClientService {
     }
 
     @Override
-    public Page<ClientDTO> getClientsByCreatedBy(String username, Pageable pageable) {
-        return clientRepository.findAllByCreatedBy_Username(username, pageable)
+    public Page<ClientDTO> getClientsByCreatedBy(String userName, Pageable pageable) {
+        return clientRepository.findAllByCreatedBy_UserName(userName, pageable)
                 .map(clientMapper::toDTO);
     }
 

@@ -14,7 +14,7 @@ public interface ClientService {
 
     Page<ClientDTO> searchClients(String name, String email, String phone, Pageable pageable);
 
-    Page<ClientDTO> getClientsByCreatedBy(String username, Pageable pageable);
+    Page<ClientDTO> getClientsByCreatedBy(String userName, Pageable pageable);
 
 }
 

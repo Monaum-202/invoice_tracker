@@ -61,4 +61,12 @@ public class ClientDTO {
     public void setNid(String nid) {
         this.nid = nid;
     }
+
+    public String getCreatedBy() {
+        return createdBy;
+    }
+
+    public void setCreatedBy(String createdBy) {
+        this.createdBy = createdBy;
+    }
 }

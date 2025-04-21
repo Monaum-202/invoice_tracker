@@ -46,14 +46,14 @@ public class ClientController {
         return ResponseEntity.ok(clients);
     }
 
-    @GetMapping("/by-username/{username}")
+    @GetMapping("/by-username/{userName}")
     public ResponseEntity<Page<ClientDTO>> getClientsByCreatedBy(
-            @PathVariable String username,
+            @PathVariable String userName,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size
     ) {
         Pageable pageable = PageRequest.of(page, size);
-        return ResponseEntity.ok(clientService.getClientsByCreatedBy(username, pageable));
+        return ResponseEntity.ok(clientService.getClientsByCreatedBy(userName, pageable));
     }
 
 

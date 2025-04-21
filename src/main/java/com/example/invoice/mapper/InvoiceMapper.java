@@ -81,7 +81,7 @@ public class InvoiceMapper {
         // Set the client entity (assuming you have a method to get a Client by ID)
         ClientDTO clientDTO = invoiceDTO.getClient();
         if (clientDTO != null) {
-            Client existingClient = clientRepository.findByNid(clientDTO.getNid());
+            Client existingClient = clientRepository.findByPhone(clientDTO.getPhone());
             if (existingClient != null) {
                 // Use existing client if NID matches
                 invoice.setClient(existingClient);
