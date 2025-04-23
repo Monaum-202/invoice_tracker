@@ -29,5 +29,9 @@ public interface ClientRepository extends JpaRepository<Client, Long> {
             Pageable pageable);
 
     Page<Client> findAllByCreatedBy_UserName(String userName, Pageable pageable);
+
+
+
+
 }
 

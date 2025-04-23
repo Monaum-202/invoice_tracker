@@ -4,6 +4,7 @@ import com.example.invoice.dto.ClientDTO;
 import com.example.invoice.entity.Client;
 import com.example.invoice.mapper.ClientMapper;
 import com.example.invoice.repository.ClientRepository;
+import com.example.invoice.repository.InvoiceRepository;
 import com.example.invoice.repository.security.UserRepository;
 import com.example.invoice.service.ClientService;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +19,7 @@ public class ClientServiceImpl implements ClientService {
 
     @Autowired
     private ClientRepository clientRepository;
+
 
 
 
@@ -84,4 +86,8 @@ public class ClientServiceImpl implements ClientService {
         Page<Client> clients = clientRepository.searchClients(name, email, phone, pageable);
         return clients.map(clientMapper::toDTO);
     }
+
+
+
+
 }

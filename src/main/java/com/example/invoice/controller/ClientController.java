@@ -2,6 +2,8 @@ package com.example.invoice.controller;
 
 import com.example.invoice.dto.ClientDTO;
 import com.example.invoice.service.ClientService;
+import com.example.invoice.service.InvoiceService;
+import com.example.invoice.service.impl.InvoiceServiceImpl;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -19,6 +21,9 @@ public class ClientController {
 
     @Autowired
     private ClientService clientService;
+
+    @Autowired
+    private InvoiceServiceImpl invoiceService;
 
     @Autowired
     public ClientController(ClientService clientService) {
@@ -81,4 +86,24 @@ public class ClientController {
             Pageable pageable) {
         return clientService.searchClients(name, email, phone, pageable);
     }
+
+    @GetMapping("/total-amount/{clientId}")
+    public ResponseEntity<Double> getTotalAmount(@PathVariable Long clientId) {
+        Double total = invoiceService.getTotalAmountByClientId(clientId);
+        return ResponseEntity.ok(total != null ? total : 0.0);
+    }
+
+    @GetMapping("/total-paid/{clientId}")
+    public ResponseEntity<Double> getTotalPaidAmount(@PathVariable Long clientId) {
+        Double total = invoiceService.getTotalPaidByClientId(clientId);
+        return ResponseEntity.ok(total != null ? total : 0.0);
+    }
+
+    @GetMapping("/total-due/{clientId}")
+    public ResponseEntity<Double> getTotalDueAmount(@PathVariable Long clientId) {
+        Double total = invoiceService.getTotalDueByClientId(clientId);
+        return ResponseEntity.ok(total != null ? total : 0.0);
+    }
+
+
 }

@@ -16,6 +16,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Service
 
@@ -112,6 +113,31 @@ public class InvoiceServiceImpl implements InvoiceService {
     public Page<InvoiceDTO> getOverdueInvoices(Pageable pageable) {
         return invoiceRepository.findOverdueInvoices(pageable)
                 .map(invoiceMapper::toDTO);
+    }
+
+    public Double getTotalAmountByClientId(Long clientId) {
+        return invoiceRepository.findTotalAmountByClientId(clientId);
+    }
+
+    public Double getTotalPaidByClientId(Long clientId) {
+        return invoiceRepository.findTotalAmountByClientId(clientId);
+    }
+
+    public Double getTotalDueByClientId(Long clientId) {
+        return invoiceRepository.findTotalAmountByClientId(clientId);
+    }
+
+
+    public List<Double> getTotalAmountsByUserName(String userName) {
+        return invoiceRepository.findTotalAmountsByUserName(userName);
+    }
+
+    public List<Double> getTotalPaidAmountsByUserName(String userName) {
+        return invoiceRepository.findTotalPaidAmountByUserName(userName);
+    }
+
+    public List<Double> getTotalDueAmountsByUserName(String userName) {
+        return invoiceRepository.findTotalDueAmountByUserName(userName);
     }
 
 

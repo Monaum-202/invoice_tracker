@@ -2,6 +2,7 @@ package com.example.invoice.controller;
 
 import com.example.invoice.dto.InvoiceDTO;
 import com.example.invoice.service.InvoiceService;
+import com.example.invoice.service.impl.InvoiceServiceImpl;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -12,6 +13,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 
 @RestController
 @RequestMapping("/api/invoices")
@@ -20,6 +23,9 @@ public class InvoiceController {
 
     @Autowired
     private InvoiceService invoiceService;
+
+    @Autowired
+    private InvoiceServiceImpl invoiceService2;
 
 
     public InvoiceController(InvoiceService invoiceService) {
@@ -123,5 +129,23 @@ public class InvoiceController {
     }
 
 
+
+    @GetMapping("/totals-by-user/{userName}")
+    public ResponseEntity<List<Double>> getTotalAmounts(@PathVariable String userName) {
+        List<Double> amounts = invoiceService2.getTotalAmountsByUserName(userName);
+        return ResponseEntity.ok(amounts);
+    }
+
+    @GetMapping("/totals-paid-by-user/{userName}")
+    public ResponseEntity<List<Double>> getTotalPaidAmounts(@PathVariable String userName) {
+        List<Double> amounts = invoiceService2.getTotalPaidAmountsByUserName(userName);
+        return ResponseEntity.ok(amounts);
+    }
+
+    @GetMapping("/totals-due-by-user/{userName}")
+    public ResponseEntity<List<Double>> getTotalDueAmounts(@PathVariable String userName) {
+        List<Double> amounts = invoiceService2.getTotalDueAmountsByUserName(userName);
+        return ResponseEntity.ok(amounts);
+    }
 
 }
