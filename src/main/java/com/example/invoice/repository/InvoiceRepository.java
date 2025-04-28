@@ -19,13 +19,9 @@ public interface InvoiceRepository extends JpaRepository<Invoice, Long> {
 
     // Search by invoice number, client name, or status
     @Query("SELECT i FROM Invoice i WHERE " +
-            "(:invoiceNumber IS NULL OR i.invoiceNumber LIKE %:invoiceNumber%) " +
-            "AND (:clientName IS NULL OR i.client.name LIKE %:clientName%) " +
-            "AND (:status IS NULL OR i.status = :status)")
+            "(:invoiceNumber IS NULL OR i.invoiceNumber LIKE %:invoiceNumber%) ")
     Page<Invoice> searchInvoices(
             @Param("invoiceNumber") String invoiceNumber,
-            @Param("clientName") String clientName,
-            @Param("status") String status,
             Pageable pageable);
 
 

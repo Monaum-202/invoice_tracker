@@ -71,10 +71,8 @@ public class InvoiceController {
     @GetMapping("/search")
     public Page<InvoiceDTO> searchInvoices(
             @RequestParam(required = false) String invoiceNumber,
-            @RequestParam(required = false) String clientName,
-            @RequestParam(required = false) String status,
             Pageable pageable) {
-        return invoiceService.searchInvoices(invoiceNumber, clientName, status, pageable);
+        return invoiceService.searchInvoices(invoiceNumber,pageable);
     }
 
 

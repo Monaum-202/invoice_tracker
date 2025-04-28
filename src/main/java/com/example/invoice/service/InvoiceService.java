@@ -11,7 +11,7 @@ public interface InvoiceService {
     InvoiceDTO updateInvoice(Long id, InvoiceDTO invoiceDTO);
     void deleteInvoice(Long id);
 
-    Page<InvoiceDTO> searchInvoices(String invoiceNumber, String clientName, String status, Pageable pageable);
+    Page<InvoiceDTO> searchInvoices(String invoiceNumber, Pageable pageable);
 
     Page<InvoiceDTO> getInvoicesByStatus(String status, Pageable pageable);
 

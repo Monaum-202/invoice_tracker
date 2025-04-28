@@ -98,8 +98,8 @@ public class InvoiceServiceImpl implements InvoiceService {
     }
 
     @Override
-    public Page<InvoiceDTO> searchInvoices(String invoiceNumber, String clientName, String status, Pageable pageable) {
-        Page<Invoice> invoices = invoiceRepository.searchInvoices(invoiceNumber, clientName, status, pageable);
+    public Page<InvoiceDTO> searchInvoices(String invoiceNumber, Pageable pageable) {
+        Page<Invoice> invoices = invoiceRepository.searchInvoices(invoiceNumber, pageable);
         return invoices.map(invoiceMapper::toDTO);
     }
 
